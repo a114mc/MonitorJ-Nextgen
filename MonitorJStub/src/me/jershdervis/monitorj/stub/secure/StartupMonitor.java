@@ -22,11 +22,10 @@ public class StartupMonitor extends ClientSystemUtil implements Runnable {
     @Override
     public void run() {
         OSCheck.OSType osType = OSCheck.getOperatingSystemType();
-        while(true) {
+        while (true) {
             switch (osType) {
                 case Windows:
-                    if(!this.windowsStartupKeyExists(keyName))
-                        this.createWindowsStartupKey(keyName);
+                    if (!this.windowsStartupKeyExists(keyName)) this.createWindowsStartupKey(keyName);
                     break;
                 case MacOS:
                     //TODO: Add Mac OS Startup persistence
@@ -45,40 +44,28 @@ public class StartupMonitor extends ClientSystemUtil implements Runnable {
 
     /**
      * Checks if the Registry Key exists in the Windows Registry
+     *
      * @param name
      * @return
      */
     private boolean windowsStartupKeyExists(String name) {
         try {
-            String userKey = WinRegistry.readString(WinRegistry.HKEY_CURRENT_USER,
-                    "Software\\Microsoft\\Windows\\CurrentVersion\\Run",
-                    name,
-                    WinRegistry.KEY_WOW64_32KEY);
+            String userKey = WinRegistry.readString(WinRegistry.HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Run", name, WinRegistry.KEY_WOW64_32KEY);
             return userKey != null;
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
+        } catch (InvocationTargetException | IllegalAccessException e) {
         }
         return false;
     }
 
     /**
      * Creates the Startup key in Windows Registry
+     *
      * @param name
      */
     private void createWindowsStartupKey(String name) {
         try {
-            WinRegistry.writeStringValue(WinRegistry.HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Run",
-                    name,
-                    "\"" + ClientSystemUtil.jarLocationOnDisc() + "\"",
-                    WinRegistry.KEY_WOW64_32KEY);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
+            WinRegistry.writeStringValue(WinRegistry.HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Run", name, "\"" + ClientSystemUtil.jarLocationOnDisc() + "\"", WinRegistry.KEY_WOW64_32KEY);
+        } catch (URISyntaxException | InvocationTargetException | IllegalAccessException e) {
         }
     }
 }

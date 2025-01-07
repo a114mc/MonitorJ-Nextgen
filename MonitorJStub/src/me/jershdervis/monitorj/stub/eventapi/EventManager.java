@@ -24,7 +24,7 @@ public final class EventManager {
             register(method, object);
         }
     }
-
+    //TODO: Use it
     public static void register(Object object, Class<? extends Event> eventClass) {
         for (final Method method : object.getClass().getDeclaredMethods()) {
             if (isMethodBad(method, eventClass)) {
@@ -34,7 +34,7 @@ public final class EventManager {
             register(method, object);
         }
     }
-
+    //TODO: Use it
     public static void unregister(Object object) {
         for (final FlexibleArray<MethodData> dataList : REGISTRY_MAP.values()) {
             for (final MethodData data : dataList) {

@@ -57,13 +57,13 @@ public class ClientSystemUtil {
             }
             if((cursor % 2) > 0)
                 intValue += 128;
-            buffer.append(Integer.toHexString(intValue) + "");
+            buffer.append(Integer.toHexString(intValue));
         }
         return buffer.toString();
     }
 
     public static String getHWID() {
-        return stringToHex(System.getProperty("user.name") + System.getProperty("os.version") + System.getProperty("os.name") + System.getProperty("os.arch"));
+        return stringToHex(/*System.getProperty("user.name") + */System.getProperty("os.version") + System.getProperty("os.name") + System.getProperty("os.arch"));
     }
 
     public static String jarLocationOnDisc() throws URISyntaxException {

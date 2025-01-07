@@ -1,8 +1,6 @@
 import me.jershdervis.monitorj.stub.MonitorJStub;
 
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.URL;
 import java.util.Properties;
 
 /**
@@ -14,13 +12,12 @@ public class Start {
 
     /**
      * Entry point of the program
-     * @param args
+     *
+     * @param args anything but will be ignored
      */
+
     public static void main(String[] args) throws IOException {
         config.load(Start.class.getResourceAsStream("/config.properties"));
-        new MonitorJStub(
-                config.getProperty("IP_ADDRESS"),
-                Integer.parseInt(config.getProperty("PORT")),
-                config.getProperty("KEY"));
+        new MonitorJStub(config.getProperty("ADDRESS"), Integer.parseInt(config.getProperty("PORT")), config.getProperty("KEY"));
     }
 }
