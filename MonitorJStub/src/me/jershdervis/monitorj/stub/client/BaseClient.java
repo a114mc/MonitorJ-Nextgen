@@ -1,6 +1,8 @@
 package me.jershdervis.monitorj.stub.client;
 
+import lombok.Getter;
 import me.jershdervis.monitorj.stub.MonitorJStub;
+import wiki.mtf.utils.SoutUtils;
 
 import java.io.*;
 import java.net.*;
@@ -10,14 +12,35 @@ import java.net.*;
  */
 public class BaseClient implements Runnable {
 
+
     private final long RECONNECT_DELAY = 10000L;
-
-    private Socket serverSocketConnection;
-    private DataOutputStream dataOutputStream;
-    private DataInputStream dataInputStream;
-
     private final String address;
     private final int port;
+    /**
+     * -- GETTER --
+     *  Gets the Socket Object the the current server
+     *
+     * @return
+     */
+    @Getter
+    private Socket serverSocketConnection;
+    /**
+     * -- GETTER --
+     *  Gets the DataOutputStream Object of the current server
+     *
+     * @return
+     */
+    @Getter
+    private DataOutputStream dataOutputStream;
+    /**
+     * -- GETTER --
+     *  Gets the DataInputStream Object of the current server
+     *
+     * @return
+     */
+    @Getter
+    private DataInputStream dataInputStream;
+    private String exc = "";
 
     public BaseClient(String address, int port) throws IOException {
         this.address = address;
@@ -26,8 +49,8 @@ public class BaseClient implements Runnable {
 
     @Override
     public void run() {
-        reconnect:
         while (true) {
+            reconnect:
             /**
              * Establish connection to server
              * If fails it will wait the delayed time and rerun through here
@@ -38,10 +61,10 @@ public class BaseClient implements Runnable {
                 this.dataInputStream = new DataInputStream(this.serverSocketConnection.getInputStream());
                 System.out.println("Connection Success!");
             } catch (IOException e) {
-                e.printStackTrace();
-
-                this.delayReconnection();
-                continue reconnect;
+                exc = e.toString();
+                if (exc.toLowerCase().contains("refused")) {
+                    System.out.println(new SoutUtils().yellowBGStr(exc));
+                }
             }
 
             /**
@@ -53,30 +76,41 @@ public class BaseClient implements Runnable {
             /**
              * While the current socket isn't closed
              */
-            while (!this.serverSocketConnection.isClosed()) {
-                int packet;
-                try {
-                    while((packet = this.dataInputStream.readByte()) < 0)
-                        MonitorJStub.getInstance().EVENT_RECEIVE_PACKET.call(packet, this);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
 
-                /**
-                 * Calls the disconnect event as well as starting the reconnection process.
-                 */
-                MonitorJStub.getInstance().EVENT_DISCONNECT.call(this);
-                this.delayReconnection();
-                continue reconnect;
+            try {
+                while (!this.serverSocketConnection.isClosed()) {
+                    int packet;
+                    try {
+                        while ((packet = this.dataInputStream.readByte()) < 0)
+                            MonitorJStub.getInstance().EVENT_RECEIVE_PACKET.call(packet, this);
+                    } catch (IOException e) {
+                        exc = e.toString();
+                        if (exc.toLowerCase().contains("closed")) {
+                            System.out.println(new SoutUtils().yellowBGStr(exc));
+                        }
+                    }
+
+                    /**
+                     * Calls the disconnect event as well as starting the reconnection process.
+                     */
+                    MonitorJStub.getInstance().EVENT_DISCONNECT.call(this);
+                    this.delayReconnection();
+                    break;
+                }
+            } catch (NullPointerException ignored) {
+
             }
 
             this.delayReconnection();
-            continue reconnect; //Retry connection
+            continue;
+
         }
     }
 
+
     /**
      * Resolves the compiled stubs ip.
+     *
      * @param address
      * @return
      * @throws MalformedURLException
@@ -85,15 +119,11 @@ public class BaseClient implements Runnable {
     private String addressToIp(String address) throws MalformedURLException, UnknownHostException {
         boolean containsProtocol = address.toLowerCase().contains("http://");
 
-        String externalIp = containsProtocol ?
-                InetAddress.getByName(new URL(this.address).getHost()).getHostAddress() :
-                InetAddress.getByName(new URL("http://" + this.address).getHost()).getHostAddress();
+        String externalIp = containsProtocol ? InetAddress.getByName(new URL(this.address).getHost()).getHostAddress() : InetAddress.getByName(new URL("http://" + this.address).getHost()).getHostAddress();
 
         try {
-            String myExternalIp = new BufferedReader(new InputStreamReader(
-                    new URL("http://checkip.amazonaws.com/").openStream())).readLine();
-            if(externalIp.equals(myExternalIp))
-                return "127.0.0.1";
+            String myExternalIp = new BufferedReader(new InputStreamReader(new URL("http://checkip.amazonaws.com/").openStream())).readLine();
+            if (externalIp.equals(myExternalIp)) return "127.0.0.1";
         } catch (IOException e) {
 
         }
@@ -113,6 +143,7 @@ public class BaseClient implements Runnable {
 
     /**
      * Create Socket connection. Returns the socket that was created.
+     *
      * @param address
      * @param port
      * @return
@@ -124,27 +155,4 @@ public class BaseClient implements Runnable {
         return new Socket(address, port);
     }
 
-    /**
-     * Gets the Socket Object the the current server
-     * @return
-     */
-    public Socket getServerSocketConnection() {
-        return this.serverSocketConnection;
-    }
-
-    /**
-     * Gets the DataOutputStream Object of the current server
-     * @return
-     */
-    public DataOutputStream getDataOutputStream() {
-        return this.dataOutputStream;
-    }
-
-    /**
-     * Gets the DataInputStream Object of the current server
-     * @return
-     */
-    public DataInputStream getDataInputStream() {
-        return this.dataInputStream;
-    }
 }

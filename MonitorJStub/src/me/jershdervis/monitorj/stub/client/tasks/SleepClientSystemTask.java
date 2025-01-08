@@ -28,12 +28,12 @@ public class SleepClientSystemTask extends PacketTask {
                 break;
             case MacOS: //Untested
                 String version = System.getProperty("os.version");
-                String[] splitter = version.split(".");
+                String[] splitter = version.split("\\.");
                 boolean cmdDetermine = Integer.parseInt(splitter[0]) > 10 && Integer.parseInt(splitter[1]) > 9;
                 sleepCommand = cmdDetermine ? "pmset displaysleepnow" : "pmset sleepnow";
                 break;
             case Linux: //Untested
-                sleepCommand = "pm-hibernate";
+                sleepCommand = "pm-hibernate";//bash: pm-hibernate: 未找到命令
                 break;
         }
         if(sleepCommand != null)

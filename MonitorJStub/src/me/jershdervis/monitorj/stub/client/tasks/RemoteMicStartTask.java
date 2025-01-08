@@ -19,7 +19,7 @@ public class RemoteMicStartTask extends PacketTask {
     }
 
     @Override
-    public void run(BaseClient client) throws IOException {
+    public synchronized void run(BaseClient client) throws IOException {
         (remoteMicStream = new Thread(new RemoteMicrophoneStream(client))).start();
     }
 }

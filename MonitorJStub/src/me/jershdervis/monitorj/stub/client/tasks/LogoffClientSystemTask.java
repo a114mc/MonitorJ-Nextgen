@@ -9,7 +9,7 @@ import java.io.IOException;
 
 /**
  * Created by Josh on 4/07/2015.
- * TODO: Needs to be tested on Mac and Linux
+ * TODO: Needs to be tested on Mac
  */
 public class LogoffClientSystemTask extends PacketTask {
 
@@ -28,9 +28,9 @@ public class LogoffClientSystemTask extends PacketTask {
             case MacOS: //Untested
                 logoffCommand = "osascript -e 'tell application \"System Events\" to log out'";
                 break;
-            case Linux: //Untested
+            case Linux: //Gnome only
                 String version = System.getProperty("os.version");
-                String[] splitter = version.split(".");
+                String[] splitter = version.split("\\.");
                 boolean laterVersion = Integer.parseInt(splitter[0]) > 11 && Integer.parseInt(splitter[1]) >= 10;
                 logoffCommand = laterVersion ?
                         "gnome-session-quit" :

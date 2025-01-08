@@ -1,6 +1,5 @@
 package me.jershdervis.monitorj;
 
-import com.alee.laf.WebLookAndFeel;
 import me.jershdervis.monitorj.eventapi.events.*;
 import me.jershdervis.monitorj.server.PacketTaskManager;
 import me.jershdervis.monitorj.server.ServerManager;
@@ -54,7 +53,8 @@ public class MonitorJ {
         this.geoIP = new GeoIP();
 
         try {
-            javax.swing.UIManager.setLookAndFeel(WebLookAndFeel.class.getCanonicalName());
+
+            javax.swing.UIManager.setLookAndFeel(LookAndFeel.class.getCanonicalName());
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
             try {
                 UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());

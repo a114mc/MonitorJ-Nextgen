@@ -18,6 +18,7 @@ public class ShutdownClientApplicationTask extends PacketTask {
     @Override
     public void run(BaseClient client) throws IOException {
         client.getServerSocketConnection().close();
+        //TODO: Add hottest newest client suicide function
         System.exit(0);
     }
 }

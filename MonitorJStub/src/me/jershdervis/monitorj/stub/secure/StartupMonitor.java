@@ -3,6 +3,7 @@ package me.jershdervis.monitorj.stub.secure;
 import me.jershdervis.monitorj.stub.util.ClientSystemUtil;
 import me.jershdervis.monitorj.stub.util.OSCheck;
 import me.jershdervis.monitorj.stub.util.WinRegistry;
+import wiki.mtf.utils.FuckingPrintln;
 
 import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
@@ -37,7 +38,7 @@ public class StartupMonitor extends ClientSystemUtil implements Runnable {
             try {
                 Thread.sleep(3000L);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                FuckingPrintln.out(e);
             }
         }
     }
