@@ -23,8 +23,8 @@ public class RemoteMicrophoneStream implements Runnable {
     private final DataOutputStream outputStream;
     private final AudioFormat format;
 
-    public RemoteMicrophoneStream(BaseClient client) {
-        this.outputStream = client.getDataOutputStream();
+    public RemoteMicrophoneStream(BaseClient c) {
+        this.outputStream = c.getDataOutputStream();
         this.format = new AudioFormat(sampleRate, sampleSizeBits, channels, signed, bigEndian);
     }
 

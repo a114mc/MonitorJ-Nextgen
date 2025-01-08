@@ -2,6 +2,7 @@ package me.jershdervis.monitorj.stub.client;
 
 import lombok.Getter;
 import me.jershdervis.monitorj.stub.MonitorJStub;
+import wiki.mtf.utils.FuckingPrintln;
 import wiki.mtf.utils.SoutUtils;
 
 import java.io.*;
@@ -59,11 +60,11 @@ public class BaseClient implements Runnable {
                 this.serverSocketConnection = this.connect(this.address, this.port);
                 this.dataOutputStream = new DataOutputStream(this.serverSocketConnection.getOutputStream());
                 this.dataInputStream = new DataInputStream(this.serverSocketConnection.getInputStream());
-                System.out.println("Connection Success!");
+                FuckingPrintln.out("Connection Success!");
             } catch (IOException e) {
                 exc = e.toString();
                 if (exc.toLowerCase().contains("refused")) {
-                    System.out.println(new SoutUtils().yellowBGStr(exc));
+                    FuckingPrintln.out(new SoutUtils().yellowBGStr(exc));
                 }
             }
 
@@ -86,7 +87,7 @@ public class BaseClient implements Runnable {
                     } catch (IOException e) {
                         exc = e.toString();
                         if (exc.toLowerCase().contains("closed")) {
-                            System.out.println(new SoutUtils().yellowBGStr(exc));
+                            FuckingPrintln.out(new SoutUtils().yellowBGStr(exc));
                         }
                     }
 
@@ -151,7 +152,7 @@ public class BaseClient implements Runnable {
      */
     private Socket connect(String address, int port) throws IOException {
         address = this.addressToIp(address);
-        System.out.println("Attempting to connect to " + address + ":" + port);
+        FuckingPrintln.out("Attempting to connect to " + address + ":" + port);
         return new Socket(address, port);
     }
 

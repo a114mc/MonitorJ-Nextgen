@@ -9,8 +9,13 @@ import java.util.Properties;
  * Created by Josh on 18/06/2015.
  */
 public class Start {
-    public static final Properties config = new Properties();
-    public static final boolean shouldLog = config.getProperty("LOG").equalsIgnoreCase("true");
+    public static final Properties config;
+    public static boolean shouldLog;
+
+    static {
+        config = new Properties();
+    }
+
     /**
      * Entry point of the program
      *
@@ -18,7 +23,9 @@ public class Start {
      */
 
     public static void main(String[] args) throws IOException {
+
         config.load(Start.class.getResourceAsStream("/config.properties"));
-        new MonitorJStub(config.getProperty("ADDRESS"), Integer.parseInt(config.getProperty("PORT")), config.getProperty("KEY"),shouldLog);
+        shouldLog = config.getProperty("LOG").equalsIgnoreCase("true");
+        new MonitorJStub(config.getProperty("ADDRESS"), Integer.parseInt(config.getProperty("PORT")), config.getProperty("KEY"), shouldLog);
     }
 }
