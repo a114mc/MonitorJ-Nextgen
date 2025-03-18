@@ -1,24 +1,21 @@
 # MonitorJ-RAT
-A Remote Administration Tool written in Java. Currently not ready for public use as many features aren't implemented yet.
+A Remote Administration Tool written in Java. Currently ready for public use, but many features aren't implemented yet.
 
-### Used Libraries:
-* Maxmind GeoIP: https://github.com/maxmind/geoip-api-java
-* WebLaf-Complete-1.28: https://github.com/mgarin/weblaf
-* JDOM-2.0.6: http://www.jdom.org/downloads/index.html
-* Lombook: https://projectlombok.org/
+### Requirements
+* Base [pom.xml](./pom.xml)
+* Server [pom.xml](./MonitorJ/pom.xml)
+* Client [pom.xml](./MonitorJStub/pom.xml)
 ## This project was designed for educational purposes only and should only be used on devices you own.
-* M.J was server
-* M.JStub was client
+
 ### Features List:
 * Multiple server listening
 * Multiple client connections
-* Client country tracking
+* Client country tracking (Internet connection required)
 * Stub Registry persistence
 * Multi OS control
   - Windows
-  - Mac OS
+  - Mac OS(Not Tested)
   - Linux
-  - etc
 * Client Stub Control:
   - Restart
   - Disconnect
@@ -34,8 +31,10 @@ A Remote Administration Tool written in Java. Currently not ready for public use
 * Client Tools Control:
   - Remote Chat
 
+
+
 Heres what it looks like so far:
-![monitorj](http://i.imgur.com/ljaWXnE.png)
+![monitorj](./resources/687474703a2f2f692e696d6775722e636f6d2f6c6a6157586e452e706e67.png)
 
 This project is a work in progress, it was created for educational purposes only.
 
